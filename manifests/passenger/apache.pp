@@ -1,7 +1,7 @@
 class rvm::passenger::apache(
   $ruby_version,
   $version,
-  $rvm_prefix = '/usr/local',
+  $rvm_prefix = '/usr/local/',
   $mininstances = '1',
   $maxpoolsize = '6',
   $poolidletime = '300',
@@ -9,38 +9,55 @@ class rvm::passenger::apache(
   $spawnmethod = 'smart-lv2'
 ) {
 
-  class { 'rvm::passenger::gem':
-    ruby_version => $ruby_version,
-    version      => $version,
+  case $::operatingsystem {
+    Ubuntu,Debian: { include rvm::passenger::apache::ubuntu::pre }
+    CentOS,RedHat: { include rvm::passenger::apache::centos::pre }
+  }
+
+  class {
+    'rvm::passenger::gem':
+      ruby_version => $ruby_version,
+      version => $version,
   }
 
   # TODO: How can we get the gempath automatically using the ruby version
   # Can we read the output of a command into a variable?
   # e.g. $gempath = `usr/local/rvm/bin/rvm ${ruby_version} exec rvm gemdir`
-  $gempath = "${rvm_prefix}/rvm/gems/${ruby_version}/gems"
-  $binpath = "${rvm_prefix}/rvm/bin/"
-  $gemroot = "${gempath}/passenger-${version}"
+  $gempath = "${rvm_prefix}rvm/gems/${ruby_version}/gems"
+  $binpath = "${rvm_prefix}rvm/bin/"
 
-  # build the Apache module
-  # different passenger versions put the built module in different places (ext, libout, buildout)
-  include apache::dev
-
-  class { 'rvm::passenger::dependencies': } ->
-
-  exec { 'passenger-install-apache2-module':
-    command     => "${rvm::passenger::apache::binpath}rvm ${rvm::passenger::apache::ruby_version} exec passenger-install-apache2-module -a",
-    unless      => "test -f ${gemroot}/ext/apache2/mod_passenger.so || test -f ${gemroot}/libout/apache2/mod_passenger.so || test -f ${gemroot}/buildout/apache2/mod_passenger.so",
-    environment => [ 'HOME=/root', ],
-    path        => '/usr/bin:/usr/sbin:/bin',
-    require     => Class['rvm::passenger::gem','apache::dev'],
-  }
-
-  class { 'apache::mod::passenger':
-    passenger_root           => $gemroot,
-    passenger_ruby           => "${rvm_prefix}/rvm/wrappers/${ruby_version}/ruby",
-    passenger_max_pool_size  => $maxpoolsize,
-    passenger_pool_idle_time => $poolidletime,
-    require                  => Exec['passenger-install-apache2-module'],
-    subscribe                => Exec['passenger-install-apache2-module'],
+  case $::operatingsystem {
+    Ubuntu,Debian: {
+      if !defined(Class['rvm::passenger::apache::ubuntu::post']) {
+        class { 'rvm::passenger::apache::ubuntu::post':
+          ruby_version       => $ruby_version,
+          version            => $version,
+          rvm_prefix         => $rvm_prefix,
+          mininstances       => $mininstances,
+          maxpoolsize        => $maxpoolsize,
+          poolidletime       => $poolidletime,
+          maxinstancesperapp => $maxinstancesperapp,
+          spawnmethod        => $spawnmethod,
+          gempath            => $gempath,
+          binpath            => $binpath;
+        }
+      }
+    }
+    CentOS,RedHat: {
+      if !defined(Class['rvm::passenger::apache::centos::post']) {
+        class { 'rvm::passenger::apache::centos::post':
+          ruby_version       => $ruby_version,
+          version            => $version,
+          rvm_prefix         => $rvm_prefix,
+          mininstances       => $mininstances,
+          maxpoolsize        => $maxpoolsize,
+          poolidletime       => $poolidletime,
+          maxinstancesperapp => $maxinstancesperapp,
+          spawnmethod        => $spawnmethod,
+          gempath            => $gempath,
+          binpath            => $binpath;
+        }
+      }
+    }
   }
 }

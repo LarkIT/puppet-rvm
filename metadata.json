@@ -1,0 +1,175 @@
+{
+  "name": "maestrodev-rvm",
+  "version": "1.1.5",
+  "source": "http://github.com/maestrodev/puppet-rvm",
+  "author": "maestrodev & Brandon Turner <bt@brandonturner.net>",
+  "license": "Modified BSD License",
+  "summary": "A puppet module for installing and using RVM (Ruby Version Manager)",
+  "description": "Installing and using RVM (Ruby Version Manager)",
+  "project_page": "http://github.com/maestrodev/puppet-rvm",
+  "dependencies": [
+
+  ],
+  "types": [
+    {
+      "name": "rvm_gemset",
+      "doc": "Manage RVM Gemsets.",
+      "properties": [
+        {
+          "name": "ensure",
+          "doc": "The basic property that the resource should be in.  Valid values are `present`, `absent`."
+        }
+      ],
+      "parameters": [
+        {
+          "name": "name",
+          "doc": "The name of the gemset to be managed."
+        },
+        {
+          "name": "ruby_version",
+          "doc": "The ruby version to use.  This should be the fully qualified RVM string.\n    For example: 'ruby-1.9.2-p290'\n    For a full list of known strings: `rvm list known_strings`."
+        }
+      ],
+      "providers": [
+        {
+          "name": "gemset",
+          "doc": "RVM gemset support.\n\nRequired binaries: `/usr/local/rvm/bin/rvm`."
+        }
+      ]
+    },
+    {
+      "name": "rvm_gem",
+      "doc": "Ruby Gem support using RVM.",
+      "properties": [
+        {
+          "name": "ensure",
+          "doc": "What state the gem should be in.\n      Possible values:\n        *present* - the gem is installed\n        *latest* - the gem is installed and is the latest stable version\n        *absent* - the gem is not installed\n        version - the gem is installed and matches the given version  Valid values are `present` (also called `installed`), `absent`, `latest`.  Values can match `/./`."
+        }
+      ],
+      "parameters": [
+        {
+          "name": "name",
+          "doc": "The name of the Ruby gem."
+        },
+        {
+          "name": "ruby_version",
+          "doc": "The ruby version to use.  This should be the fully qualified RVM string\n    (including gemset if applicable).  For example: 'ruby-1.9.2-p136@mygemset'\n    For a full list of known strings: `rvm list known_strings`."
+        },
+        {
+          "name": "withopts",
+          "doc": "Install the gem with these makefile opts."
+        },
+        {
+          "name": "source",
+          "doc": "If a URL is passed via, then that URL is used as the\n    remote gem repository; if a source is present but is not a valid URL, it will be\n    interpreted as the path to a local gem file.  If source is not present at all,\n    the gem will be installed from the default gem repositories."
+        }
+      ],
+      "providers": [
+        {
+          "name": "gem",
+          "doc": "Ruby Gem support using RVM.\n\nRequired binaries: `/usr/local/rvm/bin/rvm`."
+        }
+      ]
+    },
+    {
+      "name": "rvm_system_ruby",
+      "doc": "Manage RVM Ruby installations.",
+      "properties": [
+        {
+          "name": "ensure",
+          "doc": "The basic property that the resource should be in.  Valid values are `present`, `absent`."
+        },
+        {
+          "name": "default_use",
+          "doc": "Should this Ruby be the system default for new terminals?"
+        },
+        {
+          "name": "autolib_mode",
+          "doc": "Set RVM autolib mode"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "name",
+          "doc": "The name of the Ruby to be managed."
+        },
+        {
+          "name": "build_opts",
+          "doc": "Build flags for RVM (e.g.: ['--movable', '--with-libyaml-dir=...', ...])"
+        }
+      ],
+      "providers": [
+        {
+          "name": "rvm",
+          "doc": "Ruby RVM support.\n\nRequired binaries: `/usr/local/rvm/bin/rvm`."
+        }
+      ]
+    },
+    {
+      "name": "rvm_alias",
+      "doc": "Manage RVM Aliases.",
+      "properties": [
+        {
+          "name": "ensure",
+          "doc": "The basic property that the resource should be in.  Valid values are `present`, `absent`."
+        }
+      ],
+      "parameters": [
+        {
+          "name": "name",
+          "doc": "The name of the alias to be managed."
+        },
+        {
+          "name": "target_ruby",
+          "doc": "The ruby version that is the target of our alias.\n    For example: 'ruby-1.9.2-p290'"
+        }
+      ],
+      "providers": [
+        {
+          "name": "alias",
+          "doc": "RVM alias support.\n\nRequired binaries: `/usr/local/rvm/bin/rvm`."
+        }
+      ]
+    }
+  ],
+  "checksums": {
+    "Gemfile": "bb267da624168aa5e679c95618bb9483",
+    "Gemfile.lock": "145d2a29878fe3465d00132c67100a0e",
+    "LICENSE": "c09f1ff12ffc19bb5aa3ca918d6496c7",
+    "Modulefile": "02328c60150d5a7f91fefe546fed8fac",
+    "README.markdown": "611016529797303d194f65043b9c3085",
+    "Rakefile": "2463907f8fe071bfe95759fcddec4950",
+    "VERSION": "c9e47dbb0e1927076ed7b2e1ec157be7",
+    "Vagrantfile": "971c11fa9f839d98f46253b44b0345b9",
+    "lib/facter/rvm_installed.rb": "17880333546300f31ee0b924dc0e7135",
+    "lib/facter/rvm_version.rb": "83ce2d25f399adbcbc04c9f441066c8b",
+    "lib/puppet/provider/rvm_alias/alias.rb": "d2fa58e62573c8bdb02e4e6f9e7eaa7d",
+    "lib/puppet/provider/rvm_gem/gem.rb": "4cfb8e0043691eb4cd391b6bfba53836",
+    "lib/puppet/provider/rvm_gemset/gemset.rb": "c7b7403d2d61e705a236ae74913c5f67",
+    "lib/puppet/provider/rvm_system_ruby/rvm_system_ruby.rb": "20934a36592b2c11c06794d544f62cd8",
+    "lib/puppet/type/rvm_alias.rb": "b36e9d47808e9036bb0c04d7d2a550a6",
+    "lib/puppet/type/rvm_gem.rb": "982596a2045adb9a34c6224918a3a32b",
+    "lib/puppet/type/rvm_gemset.rb": "b4137b09bfe987f8e9a5e2608678ee84",
+    "lib/puppet/type/rvm_system_ruby.rb": "a20e81dc86566960d90102b88a6e43c4",
+    "manifests/dependencies/centos.pp": "5d544304da254ef02f36e0db01386779",
+    "manifests/dependencies/oraclelinux.pp": "83cee0f3055189a813266bf7c1827de7",
+    "manifests/dependencies/ubuntu.pp": "41f3df4525ffcb0450c4d65adecb6ac6",
+    "manifests/dependencies.pp": "e7ab779b04fabb419db9ad0051ec00f9",
+    "manifests/init.pp": "56cd4c3a20af34e0d21d7b76a2a79505",
+    "manifests/passenger/apache/centos/post.pp": "ac8879fe04b549ccc30193f176364990",
+    "manifests/passenger/apache/centos/pre.pp": "2829e5fcf773c9215333477d13be28c9",
+    "manifests/passenger/apache/ubuntu/post.pp": "15e0066f7e400eb874f8eb47d95ca991",
+    "manifests/passenger/apache/ubuntu/pre.pp": "c7542d5e2036462a8de4308e5f6c5b4d",
+    "manifests/passenger/apache.pp": "455486d6420170f99d01516ab17a5e4c",
+    "manifests/passenger/gem.pp": "cf3dc74b961dc6def05e20964e4590cc",
+    "manifests/system.pp": "5ca5b4a910823c10d94c22e105fbff97",
+    "manifests/system_user.pp": "e26bcd9edd34b1f5aae7651237ce3a62",
+    "spec/classes/init_spec.rb": "3e9d0da7ab06f9ecfa6f6800e1e7289f",
+    "spec/classes/system_spec.rb": "205d5c4384444e69a01f1c6a3ee5cff0",
+    "spec/manifests/site.pp": "bf8e4c7df9496017023ffcabec0143ab",
+    "spec/spec_helper.rb": "3e603658ce3fe534663de4513f612f3f",
+    "templates/passenger-apache-centos.conf.erb": "f48a3f6eee7fc14549994080e8686ea6",
+    "templates/passenger-apache.conf.erb": "df973edaea2e6a9a3812b78b4ccfe3dd",
+    "tests/init.pp": "bf8e4c7df9496017023ffcabec0143ab"
+  }
+}

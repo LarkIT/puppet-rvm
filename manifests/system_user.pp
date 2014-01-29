@@ -1,14 +1,24 @@
 define rvm::system_user () {
 
+  $username = $title
   $group = $::operatingsystem ? {
     default => 'rvm',
   }
 
-  ensure_resource('user', $name, {'ensure' => 'present' })
-  ensure_resource('group', $group, {'ensure' => 'present' })
+  if ! defined(User[$username]) {
+    user { $username:
+      ensure => present;
+    }
+  }
 
-  exec { "/usr/sbin/usermod -a -G ${group} ${name}":
-    unless  => "/bin/cat /etc/group | grep ${group} | grep ${name}",
-    require => [User[$name], Group[$group]];
+  if ! defined(Group[$group]) {
+    group { $group:
+      ensure => present;
+    }
+  }
+
+  exec { "/usr/sbin/usermod -a -G $group $username":
+    unless  => "/bin/cat /etc/group | grep $group | grep $username",
+    require => [User[$username], Group[$group]];
   }
 }

@@ -6,9 +6,7 @@ Puppet::Type.type(:rvm_gem).provide(:gem) do
   desc "Ruby Gem support using RVM."
 
   has_feature :versionable
-  has_command(:rvmcmd, '/usr/local/rvm/bin/rvm') do
-    environment :HOME => ENV['HOME']
-  end
+  commands :rvmcmd => "/usr/local/rvm/bin/rvm"
 
 
   def ruby_version
