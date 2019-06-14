@@ -14,7 +14,7 @@ class rvm::gnupg_key(
 
   gnupg_key { "rvm_39499BDB":
     ensure     => present,
-    key_id     => '0x39499BDB',
+    key_id     => '39499BDB',
     user       => 'root',
     key_server => $key_server,
     key_type   => public,
