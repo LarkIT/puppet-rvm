@@ -12,9 +12,9 @@ class rvm::gnupg_key(
   #  key_type   => public,
   #}
 
-  gnupg_key { "rvm_7D2BAF1CF37B13E2069D6956105BD0E739499BDB":
+  gnupg_key { "rvm_105BD0E739499BDB":
     ensure     => present,
-    key_id     => "0x7D2BAF1CF37B13E2069D6956105BD0E739499BDB",
+    key_id     => "105BD0E739499BDB",
     user       => 'root',
     key_server => $key_server,
     key_type   => public,
