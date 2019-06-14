@@ -16,7 +16,7 @@ class rvm::gnupg_key(
     ensure     => present,
     key_id     => '39499BDB',
     user       => 'root',
-    key_server => $key_server,
+    key_server => 'hkp://pgp.mit.edu/',
     key_type   => public,
   }
 
