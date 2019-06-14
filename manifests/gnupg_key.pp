@@ -6,7 +6,7 @@ class rvm::gnupg_key(
 
   gnupg_key { "rvm_409B6B1796C275462A1703113804BB82D39DC0E3":
     ensure     => present,
-    key_id     => 409B6B1796C275462A1703113804BB82D39DC0E3,
+    key_id     => "409B6B1796C275462A1703113804BB82D39DC0E3",
     user       => 'root',
     key_server => $key_server,
     key_type   => public,
@@ -14,7 +14,7 @@ class rvm::gnupg_key(
 
   gnupg_key { "rvm_7D2BAF1CF37B13E2069D6956105BD0E739499BDB":
     ensure     => present,
-    key_id     => 7D2BAF1CF37B13E2069D6956105BD0E739499BDB,
+    key_id     => "7D2BAF1CF37B13E2069D6956105BD0E739499BDB",
     user       => 'root',
     key_server => $key_server,
     key_type   => public,
