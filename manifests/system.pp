@@ -44,7 +44,7 @@ class rvm::system(
       before     => Exec['system-rvm'],
     }
   }
-  notify {"install_from is ${install_from}"}
+  notify {"install_from is ${install_from}":}
   if $install_from {
 
     file { '/tmp/rvm':
