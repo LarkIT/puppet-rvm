@@ -19,7 +19,7 @@ class rvm::system(
     case $::kernel {
       'Linux': {
         ensure_packages(['curl'])
-        Package['curl'] -> Exec['system-rvm']
+        Package['curl'] -> Exec['system-rvm-']
       }
       default: { }
     }
@@ -41,10 +41,11 @@ class rvm::system(
     class { 'rvm::gnupg_key':
       key_server => $key_server,
       key_id     => $gnupg_key_id,
-      before     => Exec['system-rvm'],
+      before     => Exec['system-rvm-curl'],
     }
   }
   notify {"install_from is ${install_from}":}
+  notify {"actual_version is ${actual_version}":}
   if $install_from {
 
     file { '/tmp/rvm':
@@ -67,7 +68,7 @@ class rvm::system(
 
   }
   else {
-    exec { 'system-rvm-from-internet':
+    exec { 'system-rvm-curl':
       path        => '/usr/bin:/usr/sbin:/bin:/usr/local/bin',
       command     => "curl -fsSL https://get.rvm.io | bash -s -- --version ${actual_version}",
       creates     => '/usr/local/rvm/bin/rvm',
