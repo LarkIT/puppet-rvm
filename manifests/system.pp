@@ -19,7 +19,7 @@ class rvm::system(
     case $::kernel {
       'Linux': {
         ensure_packages(['curl'])
-        Package['curl'] -> Exec['system-rvm-curl']
+        Package['curl'] -> Exec['system-rvm']
       }
       default: { }
     }
@@ -68,7 +68,7 @@ class rvm::system(
 
   }
   else {
-    exec { 'system-rvm-curl':
+    exec { 'system-rvm':
       path        => '/usr/bin:/usr/sbin:/bin:/usr/local/bin',
       command     => "curl -fsSL https://get.rvm.io | bash -s -- --version ${actual_version}",
       creates     => '/usr/local/rvm/bin/rvm',
