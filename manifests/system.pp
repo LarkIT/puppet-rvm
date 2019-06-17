@@ -46,6 +46,7 @@ class rvm::system(
   }
   notify {"install_from is ${install_from}":}
   notify {"actual_version is ${actual_version}":}
+  notify {"environment is ${environment}":}
   if $install_from {
 
     file { '/tmp/rvm':
