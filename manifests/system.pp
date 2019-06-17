@@ -19,7 +19,7 @@ class rvm::system(
     case $::kernel {
       'Linux': {
         ensure_packages(['curl'])
-        Package['curl'] -> Exec['system-rvm-']
+        Package['curl'] -> Exec['system-rvm-curl']
       }
       default: { }
     }
@@ -41,7 +41,7 @@ class rvm::system(
     class { 'rvm::gnupg_key':
       key_server => $key_server,
       key_id     => $gnupg_key_id,
-      before     => Exec['system-rvm-curl'],
+      before     => Exec['system-rvm'],
     }
   }
   notify {"install_from is ${install_from}":}
