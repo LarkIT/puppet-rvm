@@ -67,7 +67,7 @@ class rvm::system(
 
   }
   else {
-    exec { 'system-rvm':
+    exec { 'system-rvm-from-internet':
       path        => '/usr/bin:/usr/sbin:/bin:/usr/local/bin',
       command     => "curl -fsSL https://get.rvm.io | bash -s -- --version ${actual_version}",
       creates     => '/usr/local/rvm/bin/rvm',
