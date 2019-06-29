@@ -40,7 +40,7 @@ class rvm::system(
   if $gnupg_key_id {
     class { 'rvm::gnupg_key':
       key_server => $key_server,
-      key_id     => $gnupg_key_id,
+      key_ids     => $gnupg_key_id,
       before     => Exec['system-rvm'],
     }
   }
