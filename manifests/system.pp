@@ -5,8 +5,7 @@ class rvm::system(
   $proxy_url=undef,
   $no_proxy=undef,
   $key_server=undef,
-  $home=$::root_home,
-  $gnupg_key_id=$rvm::params::gnupg_key_id) inherits rvm::params {
+  $home=$::root_home,) inherits rvm::params {
 
   $actual_version = $version ? {
     undef     => 'latest',
@@ -35,15 +34,9 @@ class rvm::system(
   }
   $proxy_environment = concat($http_proxy_environment, $no_proxy_environment)
   $environment = concat($proxy_environment, ["HOME=${home}"])
-
-  # install the gpg key
-  if $gnupg_key_id {
-    class { 'rvm::gnupg_key':
-      key_server => $key_server,
-      key_ids     => $gnupg_key_id,
-      before     => Exec['system-rvm'],
-    }
-  }
+   
+  include rvm::gnupg_key
+  
   if $install_from {
 
     file { '/tmp/rvm':
